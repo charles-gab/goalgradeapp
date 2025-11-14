@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoalGrade - Overview</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4B2E83;
+      --secondary: #6D72C3;
+      --accent: #948fd6;
+      --bg: #F2F0FA;
+      --surface: rgba(255,255,255,0.6);
+      --text-main: #1E1E1E;
+      --text-light: #6B7280;
+      --border: #E5E7EB;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid var(--border);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .logo-circle {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: 500;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar nav a:hover {
+      color: var(--primary);
+      background: var(--surface);
+    }
+
+    .sidebar nav a.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(75,46,131,0.2);
+    }
+
+    .main-content {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+    }
+
+    .top-bar {
+      background: rgba(255,255,255,0.75);
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 240px;
+      right: 0;
+      z-index: 10;
+    }
+
+    .date-time {
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .user-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-top i {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.user-top span {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.dropdown-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.user-top .dropdown {
+  display: none;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 140px;
+  z-index: 20;
+}
+
+.user-top .dropdown a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.user-top .dropdown a:hover {
+  background: var(--surface);
+  color: var(--primary);
+}
+
+/* Show dropdown when active */
+.user-top.active .dropdown {
+  display: block;
+}
+
+    .content-wrapper {
+      padding: 90px 20px 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .welcome-box {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .welcome-box h2 {
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .welcome-box p {
+      color: var(--text-light);
+    }
+
+    .quote {
+      margin-top: 14px;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-header h3 {
+      color: var(--primary);
+    }
+
+    .card-header button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .card-header button:hover {
+      background: var(--secondary);
+    }
+
+    .list-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .list-item i {
+      color: var(--secondary);
+    }
+
+    .list-item.completed {
+      background: #EDE9FE;
+      text-decoration: line-through;
+    }
+
+    .calendar {
+      text-align: center;
+    }
+
+    .calendar h3 {
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .calendar table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .calendar th,
+    .calendar td {
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .calendar th {
+      color: var(--text-light);
+    }
+
+    .calendar td:hover {
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+    }
+
+    .calendar .today {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    @media(max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        width: 200px;
+      }
+      .top-bar {
+        left: 200px;
+      }
+      .main-content {
+        margin-left: 200px;
+      }
+    }
+    .user-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.user-top .dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-top: 8px;
+  min-width: 140px;
+  z-index: 20;
+}
+
+.user-top .dropdown a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+}
+.user-top .dropdown a i {
+  margin-right: 8px;
+  color: var(--secondary); /* softer tone */
+  width: 16px;
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.user-top .dropdown a:hover {
+  background: var(--surface);
+  color: var(--primary);
+}
+
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-circle"></div>
+    GoalGrade
+  </div>
+  <nav>
+    <a href="#" class="active">Overview</a>
+    <a href="#">Calendar</a>
+    <a href="#">Student</a>
+    <a href="#">Analytics</a>
+    <a href="#">Smart Calculator</a>
+  </nav>
+</aside>
+
+<div class="top-bar">
+  <div class="date-time">Current Date | Current Time</div>
+  
+  <div class="user-top" id="userMenu">
+    <i class="fa-solid fa-user-circle"></i>
+    <span>Username</span>
+    <button class="dropdown-btn"><i class="fa-solid fa-caret-down"></i></button>
+
+    <div class="dropdown" id="userDropdown">
+  <a href="Profile.html">
+    <i class="fa-solid fa-user"></i> My Profile
+  </a>
+  <a href="#">
+    <i class="fa-solid fa-key"></i> Logout
+  </a>
+</div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<main class="main-content">
+  <div class="content-wrapper">
+    <div class="container">
+      <div class="left-panel">
+        <div class="welcome-box">
+          <h2>Welcome back, User!</h2>
+          <p>You have <strong>1 upcoming event</strong> and <strong>1 task</strong> today.</p>
+          <div class="quote">"Success is the sum of small efforts repeated day in and day out."</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-calendar-day"></i> Upcoming Events</h3>
+            <button>+ Add Event</button>
+          </div>
+          <div class="list-item"><i class="fa-solid fa-bell"></i> Project Deadline - Web System (Dec 1, 2025)</div>
+          <div class="list-item"><i class="fa-solid fa-bell"></i> Another Event Placeholder</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-list-check"></i> To-do List</h3>
+            <button>+ Add To-do</button>
+          </div>
+          <div class="list-item completed"><i class="fa-solid fa-check-circle"></i> Java Online Class</div>
+          <div class="list-item"><i class="fa-regular fa-circle"></i> PHP Activity</div>
+          <div class="list-item"><i class="fa-regular fa-circle"></i> Debate</div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="card calendar">
+          <h3><i class="fa-regular fa-calendar"></i> October 2025</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td class="today">5</td></tr>
+              <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr>
+              <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+              <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>
+              <tr><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  const userMenu = document.getElementById('userMenu');
+  const dropdownBtn = userMenu.querySelector('.dropdown-btn');
+
+  dropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userMenu.classList.toggle('active');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!userMenu.contains(e.target)) {
+      userMenu.classList.remove('active');
+    }
+  });
+</script>
+
+</body>
+</html>

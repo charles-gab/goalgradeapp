@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoalGrade - Dashboard</title>
+  <link rel="stylesheet" href="homepage.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="app-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Logo-placeholder.png" alt="Logo" class="app-logo" />
+      <div class="app-name">GoalGrade</div>
+    </div>
+
+    <nav>
+      <div class="menu-item active">
+        <div class="left"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></div>
+      </div>
+
+      <div class="menu-item">
+        <div class="left"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></div>
+        <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+      </div>
+      <div class="submenu">
+        <a href="calendar.html"><i class="fa-solid fa-calendar-days"></i> Calendar</a>
+        <a href="#"><i class="fa-solid fa-gear"></i> Event Setting</a>
+      </div>
+
+      <div class="menu-item">
+        <div class="left"><i class="fa-solid fa-user-graduate"></i><span>Student</span></div>
+        <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+      </div>
+      <div class="submenu">
+        <a href="#"><i class="fa-solid fa-book"></i> Subjects Enrolled</a>
+        <a href="#"><i class="fa-solid fa-chart-bar"></i> Record of Scores</a>
+        <a href="#"><i class="fa-solid fa-graduation-cap"></i> Grades</a>
+        <a href="#"><i class="fa-solid fa-equals"></i> Grade Equivalent</a>
+      </div>
+
+      <div class="menu-item">
+        <div class="left"><i class="fa-solid fa-chart-line"></i><span>Analytics</span></div>
+        <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+      </div>
+      <div class="submenu">
+        <a href="#"><i class="fa-solid fa-line-chart"></i> Scores Progress</a>
+        <a href="#"><i class="fa-solid fa-chart-line"></i> GWA Progress</a>
+      </div>
+
+      <div class="menu-item">
+        <div class="left"><i class="fa-solid fa-calculator"></i><span>Smart Calculator</span></div>
+        <i class="fa-solid fa-caret-down dropdown-arrow"></i>
+      </div>
+      <div class="submenu">
+        <a href="#"><i class="fa-solid fa-calculator"></i> Scores Calculator</a>
+        <a href="#"><i class="fa-solid fa-calculator"></i> GWA Calculator</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="top-bar">
+    <button class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="date-time">Loading date...</div>
+
+    <div class="user-profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile" class="user-avatar">
+      <div class="username-dropdown">
+        <span class="username">Username</span>
+        <i class="fa-solid fa-caret-down"></i>
+        <div class="dropdown-menu">
+          <a href="Profile.html"><i class="fa-solid fa-user"></i> My Profile</a>
+          <a href="#"><i class="fa-solid fa-sign-out"></i> Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content"></main>
+
+  <!-- Scripts -->
+  <script>
+    const usernameDropdown = document.querySelector('.username-dropdown');
+    if (usernameDropdown) {
+      usernameDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        usernameDropdown.classList.toggle('active');
+      });
+      document.addEventListener('click', (e) => {
+        if (!usernameDropdown.contains(e.target)) {
+          usernameDropdown.classList.remove('active');
+        }
+      });
+    }
+
+    const menuItems = document.querySelectorAll(".menu-item");
+    const submenus = document.querySelectorAll(".submenu");
+    const submenuLinks = document.querySelectorAll(".submenu a");
+
+    menuItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const submenu = item.nextElementSibling;
+        const arrow = item.querySelector(".dropdown-arrow");
+
+        submenus.forEach((s) => s !== submenu && s.classList.remove("show"));
+        document.querySelectorAll(".dropdown-arrow").forEach((a) => {
+          if (a !== arrow) a.classList.remove("rotate");
+        });
+
+        if (submenu && submenu.classList.contains("submenu")) {
+          submenu.classList.toggle("show");
+          arrow.classList.toggle("rotate");
+        }
+
+        menuItems.forEach((el) => el.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+
+    submenuLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.stopPropagation();
+        submenuLinks.forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+        menuItems.forEach((el) => el.classList.remove("active"));
+        link.closest(".submenu").previousElementSibling.classList.add("active");
+      });
+    });
+
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    const body = document.body;
+
+    if (hamburger && sidebar) {
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+        body.classList.toggle('sidebar-open');
+        hamburger.classList.toggle('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && window.innerWidth <= 900) {
+          sidebar.classList.remove('open');
+          body.classList.remove('sidebar-open');
+          hamburger.classList.remove('active');
+        }
+      });
+    }
+
+    function updateDateTime() {
+      const dateTimeElement = document.querySelector(".date-time");
+      const now = new Date();
+      const optionsDate = { year: "numeric", month: "long", day: "numeric" };
+      const dateString = now.toLocaleDateString(undefined, optionsDate);
+      const timeString = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      dateTimeElement.textContent = `${dateString} | ${timeString}`;
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+  <script>
+  const mainContent = document.querySelector('.main-content');
+
+  async function loadPage(page) {
+    try {
+      const response = await fetch(`pages/${page}.html`);
+      const html = await response.text();
+      mainContent.innerHTML = html;
+    } catch (error) {
+      mainContent.innerHTML = `<p style="color:red;">Error loading ${page} page.</p>`;
+    }
+  }
+
+  // Load default Dashboard
+  loadPage('dashboard');
+
+  // Sidebar link clicks
+  document.querySelectorAll('.submenu a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const text = e.target.textContent.trim().toLowerCase();
+      let page = '';
+
+      if (text.includes('calendar')) page = 'calendar';
+      else if (text.includes('event setting')) page = 'calendar-settings';
+      else if (text.includes('subjects')) page = 'student';
+      else if (text.includes('record')) page = 'records';
+      else if (text.includes('grades')) page = 'grades';
+      else if (text.includes('gwa')) page = 'gwa';
+      else page = 'dashboard';
+
+      loadPage(page);
+    });
+  });
+</script>
+
+</body>
+</html>
